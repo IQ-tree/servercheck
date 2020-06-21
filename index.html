@@ -1,1 +1,100 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Check</title>
+    <style>
+        div {
+            width: 30%;
+            height: 200px;
+            background-color: white;
+            border: 1px solid black;
+            text-align:center;
+            float: left;
+            
+        }
+        #server1 {
+            margin-left: 1%;
+        }
+        .red {
+            background-color: rgb(209, 22, 22);
+        }
+        #server2 {
+            margin: 0 3%;
+        }
+        .yellow {
+            background-color: rgb(233, 200, 54);
+        }
+        .green {
+            background-color: rgb(33, 233, 30);
+        }
+        .gray {
+            background-color: rgb(177, 177, 177);
+        }
+        @media (max-width: 800px) {
+            div {
+                float: none;
+                width: 90%;
+                margin: 0 auto;
+            }
+            #server1, #server2 {
+                margin: 0 auto 20px auto;
+                
+            }
+        }
+    </style>
+</head>
+<body>
+    <div server1 id="server1">
+        <h3>서버 1</h3>
+        <br>
+        <br>
+        <p id="p1">확인 중...</p>
+    </div>
+    
+    <div server2 id="server2">
+        <h3>서버 2</h3>
+        <br><br>
+        <p id="p2">확인 중...</p>
+    </div>
+    
+    <div server3 id="server3">
+        <h3>서버 3</h3>
+        <br><br>
+        <p id="p3">확인 중...</p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $.ajax({
+            url:"https://iq-tree.github.io/servercheck/server.json" /*JSON 파일을 바꾸려면 이 URL을 바꾸세요.*/
+        }).done(function(data) {
+            for (var i = 1; i <= 3; i++) {
+                var s = "server" + i; //output : "server1"
+                var t = "#" + s; // output: "#server1"
+                var p = "p" + i; // output : "p1"
+                switch (data[s]) {
+                case "full":
+                    $(t).addClass("red");
+                    document.getElementById(p).textContent = "가득 참";
+                    break;
+                case "crowded":
+                    $(t).addClass("yellow");
+                    document.getElementById(p).textContent = "혼잡";
+                    break;
+                case "clear":
+                    $(t).addClass("green");
+                    document.getElementById(p).textContent = "여유";
+                    break;
+                default:
+                    $(t).addClass("gray");
+                    
+                    console.log("error: " + s + t);
+                    break;
+                }
+            }
+            
+        })
+    </script>
+</body>
+</html>
